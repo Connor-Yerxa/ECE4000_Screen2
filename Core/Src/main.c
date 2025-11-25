@@ -115,6 +115,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	float temp;
 	char word[40];
+	uint8_t relay_on;
 
   /* USER CODE END 1 */
 
@@ -142,7 +143,7 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   Displ_Init(Displ_Orientat_90);		// initialize the display and set the initial display orientation (here is orientaton: 0°) - THIS FUNCTION MUST PRECEED ANY OTHER DISPLAY FUNCTION CALL.
-  Displ_CLS(ORANGE);					// after initialization (above) and before turning on backlight (below), you can draw the initial display appearance. (here I'm just clearing display with a black background)
+  Displ_CLS(MAGENTA);					// after initialization (above) and before turning on backlight (below), you can draw the initial display appearance. (here I'm just clearing display with a black background)
   Displ_BackLight('I');  			// initialize backlight and turn it on at init level
   MX_ADC1_Init();
 //  tls_temp = HAL_ADC_GetValue(&hadc1);
@@ -161,6 +162,24 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  temp = get_temp();
 	  sprintf(word, "temp: %.2f", temp);
+	  Displ_CString(1, 1, 10, 24, word, Font24, 1, WHITE, BLACK);
+
+	  if(HAL_GPIO_ReadPin(BLUE_B1_GPIO_Port, BLUE_B1_Pin))
+	  {
+		  if(relay_on)
+		  {
+			  Displ_CString(1, 25, 10, 25+24, "OFF", Font24, 1, WHITE, BLACK);
+			  HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, 0);
+			  relay_on = 0;
+		  }
+		  else
+		  {
+			  Displ_CString(1, 25, 10, 25+24, " ON", Font24, 1, WHITE, MAGENTA);
+			  HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, 1);
+			  relay_on = 1;
+		  }
+		  HAL_Delay(50);
+	  }
   }
   /* USER CODE END 3 */
 }
