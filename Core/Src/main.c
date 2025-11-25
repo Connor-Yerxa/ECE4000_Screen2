@@ -40,6 +40,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+ADC_HandleTypeDef hadc2;
 
 SPI_HandleTypeDef hspi1;
 
@@ -58,6 +59,7 @@ static void MX_USART2_UART_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_ADC2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -113,6 +115,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+	uint16_t tls_adc;
 	float temp;
 	char word[40];
 	uint8_t relay_on;
@@ -141,6 +144,7 @@ int main(void)
   MX_SPI1_Init();
   MX_ADC1_Init();
   MX_TIM3_Init();
+  MX_ADC2_Init();
   /* USER CODE BEGIN 2 */
   Displ_Init(Displ_Orientat_90);		// initialize the display and set the initial display orientation (here is orientaton: 0°) - THIS FUNCTION MUST PRECEED ANY OTHER DISPLAY FUNCTION CALL.
   Displ_CLS(MAGENTA);					// after initialization (above) and before turning on backlight (below), you can draw the initial display appearance. (here I'm just clearing display with a black background)
@@ -160,25 +164,31 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  HAL_ADC_Start(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
+	  tls_adc = HAL_ADC_GetValue(&hadc2);
+	  sprintf(word, "TLS Temp: %5dC", tls_adc);
+	  Displ_CString(1, 25, 10, 25+24, word, Font24, 1, WHITE, BLACK);
+
 	  temp = get_temp();
-	  sprintf(word, "temp: %.2f", temp);
+	  sprintf(word, "STM32 Temp: %.2fC", temp);
 	  Displ_CString(1, 1, 10, 24, word, Font24, 1, WHITE, BLACK);
 
 	  if(HAL_GPIO_ReadPin(BLUE_B1_GPIO_Port, BLUE_B1_Pin))
 	  {
 		  if(relay_on)
 		  {
-			  Displ_CString(1, 25, 10, 25+24, "OFF", Font24, 1, WHITE, BLACK);
+			  Displ_CString(1, 50, 10, 50+24, "OFF", Font24, 1, WHITE, BLACK);
 			  HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, 0);
 			  relay_on = 0;
 		  }
 		  else
 		  {
-			  Displ_CString(1, 25, 10, 25+24, " ON", Font24, 1, WHITE, MAGENTA);
+			  Displ_CString(1, 50, 10, 50+24, " ON", Font24, 1, WHITE, MAGENTA);
 			  HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, 1);
 			  relay_on = 1;
 		  }
-		  HAL_Delay(50);
+		  while(HAL_GPIO_ReadPin(BLUE_B1_GPIO_Port, BLUE_B1_Pin)){}
 	  }
   }
   /* USER CODE END 3 */
@@ -274,6 +284,53 @@ static void MX_ADC1_Init(void)
   /* USER CODE BEGIN ADC1_Init 2 */
 
   /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief ADC2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC2_Init(void)
+{
+
+  /* USER CODE BEGIN ADC2_Init 0 */
+
+  /* USER CODE END ADC2_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC2_Init 1 */
+
+  /* USER CODE END ADC2_Init 1 */
+
+  /** Common config
+  */
+  hadc2.Instance = ADC2;
+  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc2.Init.ContinuousConvMode = ENABLE;
+  hadc2.Init.DiscontinuousConvMode = DISABLE;
+  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc2.Init.NbrOfConversion = 1;
+  if (HAL_ADC_Init(&hadc2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_15;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC2_Init 2 */
+
+  /* USER CODE END ADC2_Init 2 */
 
 }
 
@@ -431,6 +488,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(DISPL_CS_GPIO_Port, DISPL_CS_Pin, GPIO_PIN_SET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
@@ -449,6 +509,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(BLUE_B1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : RELAY1_Pin */
+  GPIO_InitStruct.Pin = RELAY1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(RELAY1_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);

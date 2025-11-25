@@ -75,6 +75,8 @@ void Error_Handler(void);
 #define DISPL_CS_GPIO_Port GPIOC
 #define BLUE_B1_Pin GPIO_PIN_0
 #define BLUE_B1_GPIO_Port GPIOA
+#define RELAY1_Pin GPIO_PIN_1
+#define RELAY1_GPIO_Port GPIOA
 #define USART_TX_Pin GPIO_PIN_2
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3

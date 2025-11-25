@@ -84,8 +84,8 @@ all: main-build
 main-build: ECE400_Screen2.elf secondary-outputs
 
 # Tool invocations
-ECE400_Screen2.elf ECE400_Screen2.map: $(OBJS) $(USER_OBJS) C:\Users\Chad\Documents\_GitRepos\ECE400_Screen2\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "ECE400_Screen2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Chad\Documents\_GitRepos\ECE400_Screen2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ECE400_Screen2.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+ECE400_Screen2.elf ECE400_Screen2.map: $(OBJS) $(USER_OBJS) C:\Users\cbyer\Documents\_GitRepos\ECE400_Screen2\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "ECE400_Screen2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\cbyer\Documents\_GitRepos\ECE400_Screen2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ECE400_Screen2.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
