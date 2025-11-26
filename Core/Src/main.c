@@ -83,6 +83,62 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 }
 
+#define ADC_FULL_SCALE     (4095.0f)
+#define R_REF_OHMS         (2178.0f)   // your 2.2k
+#define PT1000_R0          (1000.0f)
+#define PT1000_A           (3.9083e-3f)
+#define PT1000_B           (-5.775e-7f)
+#define max_volt 		   (3.29)
+
+static uint16_t PT1000_ReadAdcAvg(ADC_HandleTypeDef *hadc, uint8_t samples)
+{
+    uint32_t sum = 0;
+
+    for (uint8_t i = 0; i < samples; i++)
+    {
+        HAL_ADC_Start(hadc);
+        HAL_ADC_PollForConversion(hadc, HAL_MAX_DELAY);
+        sum += HAL_ADC_GetValue(hadc);
+        HAL_ADC_Stop(hadc);
+    }
+
+    return (uint16_t)(sum / samples);
+}
+
+static float PT1000_ResistanceFromAdc(uint16_t adc_raw)
+{
+    // Rrtd = Rref * adc / (FS - adc)
+    //if (adc_raw >= 4095) adc_raw = 4094;
+    if (adc_raw == 0)    return 0.0f;
+    float voltagee = (adc_raw * max_volt) / ADC_FULL_SCALE; //voltage
+    float currentt = (max_volt - voltagee) / R_REF_OHMS;
+
+    return voltagee/ currentt;
+    //return R_REF_OHMS * ((float)adc_raw) / (ADC_FULL_SCALE - (float)adc_raw);
+}
+
+static float PT1000_TempC_FromResistance(float r_ohms)
+{
+    // For T >= 0°C: R = R0(1 + A T + B T^2)
+    // => B T^2 + A T + (1 - R/R0) = 0
+    float c = 1.0f - (r_ohms / PT1000_R0);
+    float disc = (PT1000_A * PT1000_A) - (4.0f * PT1000_B * c);
+
+    if (disc < 0.0f) return 0.0f;
+    return (-PT1000_A + sqrtf(disc)) / (2.0f * PT1000_B);
+}
+
+float PT1000_ReadTempC(void)
+{
+    const uint8_t N = 16;
+
+    uint16_t pt1000_adc = PT1000_ReadAdcAvg(&hadc2, N);
+    float r_rtd = PT1000_ResistanceFromAdc(pt1000_adc);
+    float t_c = PT1000_TempC_FromResistance(r_rtd);
+
+    return t_c;
+}
+
 
 static uint32_t adc_read_channel(uint32_t channel, uint32_t sample_time) {
     ADC_ChannelConfTypeDef sConfig = {0};
@@ -169,7 +225,7 @@ int main(void)
   HAL_Delay(1000);
   HAL_TIM_Base_Start_IT(&htim2);
   Displ_Init(Displ_Orientat_90);		// initialize the display and set the initial display orientation (here is orientaton: 0°) - THIS FUNCTION MUST PRECEED ANY OTHER DISPLAY FUNCTION CALL.
-  Displ_CLS(MAGENTA);					// after initialization (above) and before turning on backlight (below), you can draw the initial display appearance. (here I'm just clearing display with a black background)
+  Displ_CLS(CYAN);					// after initialization (above) and before turning on backlight (below), you can draw the initial display appearance. (here I'm just clearing display with a black background)
   Displ_BackLight('I');  			// initialize backlight and turn it on at init level
   MX_ADC1_Init();
 //  tls_temp = HAL_ADC_GetValue(&hadc1);
@@ -229,11 +285,25 @@ int main(void)
 	  sprintf(word, "STM32 Temp: %.2f C", temp);
 	  Displ_CString(1, 1, 10, 24, word, Font24, 1, WHITE, BLACK);
 
-	  HAL_ADC_Start(&hadc2);
-	  HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
-	  tls_adc = HAL_ADC_GetValue(&hadc2);
-	  sprintf(word, "ADC Val: %5d", tls_adc);
-	  Displ_CString(1, 50, 10, 50+24, word, Font24, 1, WHITE, BLACK);
+	  //	  HAL_ADC_Start(&hadc2);
+	  //	  HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
+	  //	  tls_adc = HAL_ADC_GetValue(&hadc2);
+	  //	  sprintf(word, "ADC Val: %5d", tls_adc);
+	  //	  Displ_CString(1, 50, 10, 50+24, word, Font24, 1, WHITE, BLACK);
+	  	  float t = PT1000_ReadTempC();
+	  	  if (t<10)
+	  	  {
+	  		sprintf(word, "PT1000:   %.2f C", t);
+	  	  }
+	  	  else{if (t<100)
+	  	  {
+		  	 sprintf(word, "PT1000:  %.2f C", t);
+	  	  }
+	  	  else
+	  	  {
+	  		 sprintf(word, "PT1000: %.2f C", t);
+	  	  }}
+	  	  Displ_CString(1, 50, 10, 50+24, word, Font24, 1, WHITE, BLACK);
 
 	  if (tim4Flag)
 	  {
@@ -241,7 +311,7 @@ int main(void)
 		sprintf(word, "TLS Temp: %.2f C", therm_temp);
 		Displ_CString(1, 25, 10, 25+24, word, Font24, 1, WHITE, BLACK);
 
-		sprintf(word, "%d", counter++);
+		sprintf(word, "%3d", counter++);
 		Displ_CString(1, 295, 10, 295+24, word, Font24, 1, WHITE, BLACK);
 		tim4Flag = 0;
 	  }
