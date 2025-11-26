@@ -8,17 +8,38 @@
 /*
 // Screen variable
 int screen = 0;
-char text[10][20];
+char text[10][20]; //textbox filler
+char display[1][50]; //Screen display
+//text = {"","","","","","","","","",""}
 
 // constant loop
   while(1) {
       //Main menu 0-99
       if (screen < 100){
-          text = {"New Test", "Calibration", "Settings", "Data"}
+          display = {"Menu"}
+          text = {"New Test", "Calibration", "Settings", "Data", "", "", "", "", "", ""}
       }
-      //testing
+      //Testing
       else if (screen < 200){
+          display = {"Select testing limit"}
+          text = {"Time","Temperature","Both","Default","","","","","",""}
 
+          //'Both' will do 110 and 111
+          if (screen = 110){ //Time select
+              display = "Select time limit (max) 10 minutes"
+              text = {"1","2","3","4","5","6","7","8","9","0"}
+          }
+          if (screen = 111){ //Temperature Select
+              display = "Select temperature delta limit (max 10 degrees)"
+              text = {"1","2","3","4","5","6","7","8","9","0"}
+          }          
+
+          if (screen = 120){ // Test running 
+              display = "Test underway"
+              text = {"Cancel","","","","","","","","",""}
+          }
+
+      
       }
       
       //Calibration
@@ -47,6 +68,7 @@ char text[10][20];
 
 
 */
+
 
 
 
