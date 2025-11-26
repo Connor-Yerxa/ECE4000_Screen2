@@ -44,8 +44,18 @@ char display[1][50]; //Screen display
       
       //Calibration
       else if (screen < 300){
-
+          display = {"Run calibration?"}
+          text = {"Confirm","Cancel","Set default","","","","","","",""}
       }   
+      if (screen = 210)
+          display = {"Select calibration material"}
+          text = {"A","B","Cancel","","","","","","",""}
+      if (screen = 220)
+          display = {"Running calibration."}
+          text = {"Cancel","","","","","","","","",""}
+      if (screen = 230)
+          display = {"Calibration sucessful"}
+          text = {"Return","","","","","","","","",""}
       
       //Settings
       else if (screen < 400){
@@ -68,6 +78,7 @@ char display[1][50]; //Screen display
 
 
 */
+
 
 
 
