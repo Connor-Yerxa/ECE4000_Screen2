@@ -21,46 +21,48 @@ char display[1][50]; //Screen display
       }
       //Testing
       else if (screen < 200){
-          display = {"Select testing limit"}
-          text = {"Time","Temperature","Both","Default","","","","","",""}
-
-          //'Both' will do 110 and 111
-          if (screen = 110){ //Time select
-              display = "Select time limit (max) 10 minutes"
-              text = {"1","2","3","4","5","6","7","8","9","0"}
-          }
-          if (screen = 111){ //Temperature Select
-              display = "Select temperature delta limit (max 10 degrees)"
-              text = {"1","2","3","4","5","6","7","8","9","0"}
-          }          
-
-          if (screen = 120){ // Test running 
-              display = "Test underway"
-              text = {"Cancel","","","","","","","","",""}
-          }
-
-      
+        display = {"Select testing limit"}
+        text = {"Time","Temperature","Both","Default","","","","","",""}
+        //'Both' will do 110 and 111
+        if (screen = 110){ //Time select
+         display = "Select time limit (max) 10 minutes"
+         text = {"1","2","3","4","5","6","7","8","9","0"}
+        }
+        if (screen = 111){ //Temperature Select
+         display = "Select temperature delta limit (max 10 degrees)"
+         text = {"1","2","3","4","5","6","7","8","9","0"}
+        }          
+        if (screen = 120){ // Test running 
+         display = "Test underway"
+         text = {"Cancel","","","","","","","","",""}
+        }
       }
       
       //Calibration
       else if (screen < 300){
-          display = {"Run calibration?"}
-          text = {"Confirm","Cancel","Set default","","","","","","",""}
-      }   
-      if (screen = 210)
+        display = {"Run calibration?"}
+        text = {"Confirm","Cancel","Set default","","","","","","",""}
+        if (screen = 210)
           display = {"Select calibration material"}
           text = {"A","B","Cancel","","","","","","",""}
-      if (screen = 220)
+        if (screen = 220)
           display = {"Running calibration."}
           text = {"Cancel","","","","","","","","",""}
-      if (screen = 230)
+        if (screen = 230)
           display = {"Calibration sucessful"}
           text = {"Return","","","","","","","","",""}
-      
+      }   
+            
       //Settings
       else if (screen < 400){
-    
+        display = {"Settings"}
+        text = {"Brightness","Sample time","Sample duration","","","","","","","Back"}
+        if (screen = 310){
+          display = "Brighness %"
+          text = {"1","2","3","4","5","6","7","8","9","0"}
+        }
       }
+        
 
       //Data
       else if (screen < 500){
@@ -78,6 +80,7 @@ char display[1][50]; //Screen display
 
 
 */
+
 
 
 
