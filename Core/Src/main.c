@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "menus.h"
+#include "max31856.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,6 +67,30 @@ static void MX_ADC2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void init_MAX()
+{
+	max31856_t therm = {&hspi1, {THERM_CS_GPIO_Port, THERM_CS_Pin}};
+	max31856_init(&therm);
+	max31856_set_noise_filter(&therm, CR0_FILTER_OUT_50Hz);
+	max31856_set_cold_junction_enable(&therm, CR0_CJ_DISABLED);
+	max31856_set_thermocouple_type(&therm, CR1_TC_TYPE_K);
+	max31856_set_average_samples(&therm, CR1_AVG_TC_SAMPLES_1);
+	max31856_set_open_circuit_fault_detection(&therm, CR0_OC_DETECT_ENABLED_TC_LESS_2ms);
+	max31856_set_conversion_mode(&therm, CR0_CONV_CONTINUOUS);
+
+	max31856_read_fault(&therm);
+	if (therm.sr.val) {
+	  /* Handle thermocouple error */
+	}
+}
+
+float read_therm_temp()
+{
+	max31856_t therm = {&hspi1, {THERM_CS_GPIO_Port, THERM_CS_Pin}};
+	HAL_Delay(50);
+	return max31856_read_TC_temp(&therm);
+}
+
 static uint32_t adc_read_channel(uint32_t channel, uint32_t sample_time) {
     ADC_ChannelConfTypeDef sConfig = {0};
     sConfig.Channel = channel;
@@ -128,6 +153,21 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  max31856_t therm = {&hspi1, {THERM_CS_GPIO_Port, THERM_CS_Pin}};
+  max31856_init(&therm);
+  //	max31856_set_noise_filter(&therm, CR0_FILTER_OUT_50Hz);
+  max31856_set_cold_junction_enable(&therm, CR0_CJ_DISABLED);
+  max31856_set_thermocouple_type(&therm, CR1_TC_TYPE_K);
+  max31856_set_average_samples(&therm, CR1_AVG_TC_SAMPLES_2);
+  max31856_set_open_circuit_fault_detection(&therm, CR0_OC_DETECT_ENABLED_TC_LESS_2ms);
+  max31856_set_conversion_mode(&therm, CR0_CONV_CONTINUOUS);
+
+  max31856_read_fault(&therm);
+  if (therm.sr.val) {
+	  /* Handle thermocouple error */
+	  Displ_CString(1, 100, 10, 100+24, "Fault :(", Font24, 1, WHITE, BLACK);
+  }
+//  float therm_temp = max31856_read_TC_temp(&therm);
 
   /* USER CODE END Init */
 
@@ -153,8 +193,7 @@ int main(void)
 //  tls_temp = HAL_ADC_GetValue(&hadc1);
 
   HAL_GPIO_WritePin(DISPL_LED_GPIO_Port, DISPL_LED_Pin, 1);
-//  sprintf(temp, "TLS Temp: %ld", tls_adc);
-//  Displ_CString(1,21, 10, 21+24, tls_temp, Font24, 1, WHITE,BLACK);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -164,27 +203,33 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_ADC_Start(&hadc2);
-	  HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
-	  tls_adc = HAL_ADC_GetValue(&hadc2);
-	  sprintf(word, "TLS Temp: %5dC", tls_adc);
-	  Displ_CString(1, 25, 10, 25+24, word, Font24, 1, WHITE, BLACK);
 
 	  temp = get_temp();
 	  sprintf(word, "STM32 Temp: %.2fC", temp);
 	  Displ_CString(1, 1, 10, 24, word, Font24, 1, WHITE, BLACK);
 
+	  sprintf(word, "TLS Temp: %.2f C", max31856_read_TC_temp(&therm));
+//	  therm_temp = max31856_read_TC_temp(&therm);
+//	  sprintf(word, "TLS Temp: %.2f C", therm_temp);
+	  Displ_CString(1, 25, 10, 25+24, word, Font24, 1, WHITE, BLACK);
+
+	  HAL_ADC_Start(&hadc2);
+	  HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
+	  tls_adc = HAL_ADC_GetValue(&hadc2);
+	  sprintf(word, "ADC Val: %5d", tls_adc);
+	  Displ_CString(1, 50, 10, 50+24, word, Font24, 1, WHITE, BLACK);
+
 	  if(HAL_GPIO_ReadPin(BLUE_B1_GPIO_Port, BLUE_B1_Pin))
 	  {
 		  if(relay_on)
 		  {
-			  Displ_CString(1, 50, 10, 50+24, "OFF", Font24, 1, WHITE, BLACK);
+			  Displ_CString(1, 75, 10, 75+24, "OFF", Font24, 1, WHITE, BLACK);
 			  HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, 0);
 			  relay_on = 0;
 		  }
 		  else
 		  {
-			  Displ_CString(1, 50, 10, 50+24, " ON", Font24, 1, WHITE, MAGENTA);
+			  Displ_CString(1, 75, 10, 75+24, " ON", Font24, 1, WHITE, MAGENTA);
 			  HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, 1);
 			  relay_on = 1;
 		  }
@@ -213,7 +258,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL2;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -228,12 +273,12 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
@@ -489,7 +534,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(DISPL_CS_GPIO_Port, DISPL_CS_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, RELAY1_Pin|THERM_CS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -510,12 +555,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(BLUE_B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : RELAY1_Pin */
-  GPIO_InitStruct.Pin = RELAY1_Pin;
+  /*Configure GPIO pins : RELAY1_Pin THERM_CS_Pin */
+  GPIO_InitStruct.Pin = RELAY1_Pin|THERM_CS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(RELAY1_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);

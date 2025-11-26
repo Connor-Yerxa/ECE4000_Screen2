@@ -34,6 +34,7 @@ extern "C" {
 #include "fonts.h"
 #include "z_displ_ILI9XXX.h"
 #include "z_displ_ILI9XXX_test.h"
+#include "max31856.h"
 
 /* USER CODE END Includes */
 
@@ -81,6 +82,8 @@ void Error_Handler(void);
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
 #define USART_RX_GPIO_Port GPIOA
+#define THERM_CS_Pin GPIO_PIN_4
+#define THERM_CS_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
