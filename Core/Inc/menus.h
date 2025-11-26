@@ -58,16 +58,14 @@ char display[1][50]; //Screen display
         display = {"Settings"}
         text = {"Brightness","Sample time","Sample duration","","","","","","","Back"}
         if (screen = 310){
-          display = "Brighness %"
-          text = {"1","2","3","4","5","6","7","8","9","0"}
+          display = "Brighness 1-10"
+          text = {"1","2","3","4","5","6","7","8","9","10"}
         }
       }
         
-
       //Data
       else if (screen < 500){
-
-      
+        //To be developed potentially later.
       }
       //Out of range
       else{
@@ -80,6 +78,7 @@ char display[1][50]; //Screen display
 
 
 */
+
 
 
 
