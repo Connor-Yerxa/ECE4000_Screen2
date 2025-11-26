@@ -44,7 +44,9 @@ ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc2;
 
 SPI_HandleTypeDef hspi1;
+SPI_HandleTypeDef hspi2;
 
+TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart2;
@@ -61,35 +63,26 @@ static void MX_SPI1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_ADC2_Init(void);
+static void MX_SPI2_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void init_MAX()
+volatile uint8_t tim4Flag=0;
+volatile uint8_t counter=0;
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	max31856_t therm = {&hspi1, {THERM_CS_GPIO_Port, THERM_CS_Pin}};
-	max31856_init(&therm);
-	max31856_set_noise_filter(&therm, CR0_FILTER_OUT_50Hz);
-	max31856_set_cold_junction_enable(&therm, CR0_CJ_DISABLED);
-	max31856_set_thermocouple_type(&therm, CR1_TC_TYPE_K);
-	max31856_set_average_samples(&therm, CR1_AVG_TC_SAMPLES_1);
-	max31856_set_open_circuit_fault_detection(&therm, CR0_OC_DETECT_ENABLED_TC_LESS_2ms);
-	max31856_set_conversion_mode(&therm, CR0_CONV_CONTINUOUS);
+  // Check if the interrupt is from your timer
+  if (htim->Instance == TIM2)
+  {
+	  tim4Flag = 1;
+  }
 
-	max31856_read_fault(&therm);
-	if (therm.sr.val) {
-	  /* Handle thermocouple error */
-	}
 }
 
-float read_therm_temp()
-{
-	max31856_t therm = {&hspi1, {THERM_CS_GPIO_Port, THERM_CS_Pin}};
-	HAL_Delay(50);
-	return max31856_read_TC_temp(&therm);
-}
 
 static uint32_t adc_read_channel(uint32_t channel, uint32_t sample_time) {
     ADC_ChannelConfTypeDef sConfig = {0};
@@ -153,21 +146,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  max31856_t therm = {&hspi1, {THERM_CS_GPIO_Port, THERM_CS_Pin}};
-  max31856_init(&therm);
-  //	max31856_set_noise_filter(&therm, CR0_FILTER_OUT_50Hz);
-  max31856_set_cold_junction_enable(&therm, CR0_CJ_DISABLED);
-  max31856_set_thermocouple_type(&therm, CR1_TC_TYPE_K);
-  max31856_set_average_samples(&therm, CR1_AVG_TC_SAMPLES_2);
-  max31856_set_open_circuit_fault_detection(&therm, CR0_OC_DETECT_ENABLED_TC_LESS_2ms);
-  max31856_set_conversion_mode(&therm, CR0_CONV_CONTINUOUS);
-
-  max31856_read_fault(&therm);
-  if (therm.sr.val) {
-	  /* Handle thermocouple error */
-	  Displ_CString(1, 100, 10, 100+24, "Fault :(", Font24, 1, WHITE, BLACK);
-  }
-//  float therm_temp = max31856_read_TC_temp(&therm);
 
   /* USER CODE END Init */
 
@@ -185,7 +163,11 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM3_Init();
   MX_ADC2_Init();
+  MX_SPI2_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  HAL_Delay(1000);
+  HAL_TIM_Base_Start_IT(&htim2);
   Displ_Init(Displ_Orientat_90);		// initialize the display and set the initial display orientation (here is orientaton: 0°) - THIS FUNCTION MUST PRECEED ANY OTHER DISPLAY FUNCTION CALL.
   Displ_CLS(MAGENTA);					// after initialization (above) and before turning on backlight (below), you can draw the initial display appearance. (here I'm just clearing display with a black background)
   Displ_BackLight('I');  			// initialize backlight and turn it on at init level
@@ -193,6 +175,45 @@ int main(void)
 //  tls_temp = HAL_ADC_GetValue(&hadc1);
 
   HAL_GPIO_WritePin(DISPL_LED_GPIO_Port, DISPL_LED_Pin, 1);
+
+  max31856_t therm = {&hspi2, {THERM_CS_GPIO_Port, THERM_CS_Pin}};
+  max31856_init(&therm);
+  max31856_set_noise_filter(&therm, CR0_FILTER_OUT_60Hz);
+  max31856_set_cold_junction_enable(&therm, CR0_CJ_ENABLED);
+  max31856_set_thermocouple_type(&therm, CR1_TC_TYPE_K);
+  max31856_set_average_samples(&therm, CR1_AVG_TC_SAMPLES_2);
+  max31856_set_open_circuit_fault_detection(&therm, CR0_OC_DETECT_ENABLED_TC_LESS_2ms);
+  max31856_set_conversion_mode(&therm, CR0_CONV_CONTINUOUS);
+
+  max31856_read_fault(&therm);
+  if (therm.sr.val) {
+	  /* Handle thermocouple error */
+	  Displ_CString(1, 100, 10, 100+24, "Fault :(", Font24, 1, WHITE, BLACK);
+  }
+    float therm_temp = max31856_read_TC_temp(&therm);
+
+  uint8_t buf[3];
+  max31856_read_nregisters(&therm, 0x0C, buf, 3);
+  sprintf(word, "Raw TC: %02X %02X %02X", buf[0], buf[1], buf[2]);
+  Displ_CString(1, 100, 10, 100+24, word, Font24, 1, WHITE, BLACK);
+  uint8_t cj[2];
+  max31856_read_nregisters(&therm, 0x0A, cj, 2);
+  sprintf(word, "CJ raw: %02X %02X", cj[0], cj[1]);
+  Displ_CString(1, 125, 10, 125+24, word, Font24, 1, WHITE, BLACK);
+  uint8_t fault;
+  max31856_read_nregisters(&therm, 0x0F, &fault, 1);
+  sprintf(word, "Fault: 0x%02X", fault);
+  Displ_CString(1, 150, 10, 150+24, word, Font24, 1, WHITE, BLACK);
+  max31856_set_conversion_mode(&therm, CR0_CONV_CONTINUOUS);
+
+  HAL_Delay(200);
+  max31856_read_nregisters(&therm, 0x0F, &fault, 1);
+  sprintf(word, "Fault delayed: 0x%02X", fault);
+  Displ_CString(1, 175, 10, 175+24, word, Font24, 1, WHITE, BLACK);
+  uint8_t cfg;
+  max31856_read_nregisters(&therm, 0x00, &cfg, 1);
+  sprintf(word, "Config: 0x%02X", cfg);
+  Displ_CString(1, 200, 10, 200+24, word, Font24, 1, WHITE, BLACK);
 
   /* USER CODE END 2 */
 
@@ -205,13 +226,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
 	  temp = get_temp();
-	  sprintf(word, "STM32 Temp: %.2fC", temp);
+	  sprintf(word, "STM32 Temp: %.2f C", temp);
 	  Displ_CString(1, 1, 10, 24, word, Font24, 1, WHITE, BLACK);
-
-	  sprintf(word, "TLS Temp: %.2f C", max31856_read_TC_temp(&therm));
-//	  therm_temp = max31856_read_TC_temp(&therm);
-//	  sprintf(word, "TLS Temp: %.2f C", therm_temp);
-	  Displ_CString(1, 25, 10, 25+24, word, Font24, 1, WHITE, BLACK);
 
 	  HAL_ADC_Start(&hadc2);
 	  HAL_ADC_PollForConversion(&hadc2, HAL_MAX_DELAY);
@@ -219,11 +235,22 @@ int main(void)
 	  sprintf(word, "ADC Val: %5d", tls_adc);
 	  Displ_CString(1, 50, 10, 50+24, word, Font24, 1, WHITE, BLACK);
 
+	  if (tim4Flag)
+	  {
+		  therm_temp = max31856_read_TC_temp(&therm);
+		sprintf(word, "TLS Temp: %.2f C", therm_temp);
+		Displ_CString(1, 25, 10, 25+24, word, Font24, 1, WHITE, BLACK);
+
+		sprintf(word, "%d", counter++);
+		Displ_CString(1, 295, 10, 295+24, word, Font24, 1, WHITE, BLACK);
+		tim4Flag = 0;
+	  }
+
 	  if(HAL_GPIO_ReadPin(BLUE_B1_GPIO_Port, BLUE_B1_Pin))
 	  {
 		  if(relay_on)
 		  {
-			  Displ_CString(1, 75, 10, 75+24, "OFF", Font24, 1, WHITE, BLACK);
+			  Displ_CString(1, 75, 10, 75+24, "OFF", Font24, 1, WHITE, MAGENTA);
 			  HAL_GPIO_WritePin(RELAY1_GPIO_Port, RELAY1_Pin, 0);
 			  relay_on = 0;
 		  }
@@ -414,6 +441,89 @@ static void MX_SPI1_Init(void)
   /* USER CODE BEGIN SPI1_Init 2 */
 
   /* USER CODE END SPI1_Init 2 */
+
+}
+
+/**
+  * @brief SPI2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI2_Init(void)
+{
+
+  /* USER CODE BEGIN SPI2_Init 0 */
+
+  /* USER CODE END SPI2_Init 0 */
+
+  /* USER CODE BEGIN SPI2_Init 1 */
+
+  /* USER CODE END SPI2_Init 1 */
+  /* SPI2 parameter configuration*/
+  hspi2.Instance = SPI2;
+  hspi2.Init.Mode = SPI_MODE_MASTER;
+  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi2.Init.NSS = SPI_NSS_SOFT;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi2.Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(&hspi2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI2_Init 2 */
+
+  /* USER CODE END SPI2_Init 2 */
+
+}
+
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 7199;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 666;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
 
 }
 
