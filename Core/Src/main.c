@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "menus.h"
+#include "menus.h" // This makes menus.c active, with all its functions (struct defined in menus.c)
 #include "max31856.h"
 /* USER CODE END Includes */
 
