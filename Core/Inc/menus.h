@@ -20,19 +20,25 @@ char display[1][50]; //Screen display
       }
       //Testing
       else if (screen < 200){
-        display = {"Select testing limit"}
+        display = {"Select testing limit(s)"}
+        both = 0
         text = {"Time","Temperature","Both","Default","","","","","",""}
-        //'Both' will do 110 and 111
+        
+        //'Both' will do 110 and 111 in order
         if (screen = 110){ //Time select
          display = "Select time limit (max) 10 minutes"
+         //NUMBER SELECT FUNCTION
+         if (both = 1){  //Active if both was selected
+            screen = 111;
+         }
         }
         if (screen = 111){ //Temperature Select
          display = "Select temperature delta limit (max 10 degrees)"
-         text = {"1","2","3","4","5","6","7","8","9","0"}
+          //NUMBER SELECT FUNCTION
         }          
-        if (screen = 120){ // Test running 
+        if (screen = 120){ // Test running, runs until done or alternative reached
          display = "Test underway"
-         text = {"Cancel","","","","","","","","",""}
+         text = {"Cancel","","","","",""}
         }
       }
       
@@ -78,6 +84,7 @@ char display[1][50]; //Screen display
 
 
 */
+
 
 
 
