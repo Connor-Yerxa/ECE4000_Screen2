@@ -3,7 +3,8 @@
 
 #include readButtons.h //Allows the reading of buttons
 #include selectNumber.h //Allows for the selection of a number 0-9 (upto 3 times)
-
+#include displayText.h //Lets the screen display the right text
+  
 /*
 // Screen variable
 int screen = 0; // sets where the screen starts
