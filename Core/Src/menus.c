@@ -1,11 +1,14 @@
 /* menus for the display interface */
 /* Start on main interface, have text boxes appear, with text added separately, potentially as variables */
 
+#include readButtons.h
+
 /*
 // Screen variable
 int screen = 0; // sets where the screen starts
 char text[6][20]; //textbox filler (6 buttons, 20char max)
 char display[1][50]; //Screen display
+int button = 0;
 
 //Expected inputs: Buttons 1-6
 //Outputs: Display
@@ -17,14 +20,14 @@ char display[1][50]; //Screen display
       if (screen < 100){
           display = {"Menu"}
           text = {"New Test", "Calibration", "Settings", "Data", "", ""}
-          //READBUTTONFUNCTION
+          int button = readButtons();
       }
       //Testing
       else if (screen < 200){
         display = {"Select testing limit(s)"}
         both = 0
         text = {"Time","Temperature","Both","Default","",""} //'Both' will do 110 and 111 in order, default will reset.
-        //READBUTTONFUNCTION
+        int button = readButtons();
         
         
         if (screen = 110){ //Time select
@@ -37,7 +40,7 @@ char display[1][50]; //Screen display
         
         if (screen = 111){ //Temperature Select
          display = "Select temperature delta limit (max 10 degrees)"
-          //READBUTTONFUNCTION
+          int button = readButtons();
         }          
         if (screen = 120){ // Test running, runs until done or alternative reached
          display = "Test underway"
@@ -50,23 +53,23 @@ char display[1][50]; //Screen display
       else if (screen < 300){
         display = {"Run calibration?"}
         text = {"Confirm","Set default","","","","Cancel"}
-        //READBUTTONFUNCTION
+        int button = readButtons();
         
         if (screen = 210){
           display = {"Select calibration material"}
           text = {"Material-A","material-B","","","","Cancel"}
-          //READBUTTONFUNCTION
+          int button = readButtons();
         }
         
         if (screen = 220){
           display = {"Running calibration."}
           text = {"Cancel","","","","",""}
-          //READBUTTONFUNCTION
+          int button = readButtons();
         }
         if (screen = 230){
           display = {"Calibration sucessful"}
           text = {"Return","","","","",""}
-          //READBUTTONFUNCTION
+          int button = readButtons();
         }
       }   
             
@@ -77,15 +80,15 @@ char display[1][50]; //Screen display
         
         if (screen = 310){//Brightness
           display = "Brighness 1-10"
-          //READBUTTONFUNCTION
+          int button = readButtons();
         }
                 if (screen = 310){//Sample Temp
           display = "Temperature change"
-          //READBUTTONFUNCTION
+          int button = readButtons();
         }
                 if (screen = 310){//Sample Duration
           display = "Sample Duration"
-          //READBUTTONFUNCTION
+          int button = readButtons();
         }
       }
         
