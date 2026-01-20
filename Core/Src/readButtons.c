@@ -1,13 +1,13 @@
 /* Reads the button stats, returns 0-6 depending on which are pressed */
 //Ignores multiple buttons, just returns the first
 
-buttonPressed = 0;
-button1 = false;
-button2 = false;
-button3 = false;
-button4 = false;
-button5 = false;
-button6 = false;
+int buttonPressed = 0;
+boolean button1 = false;
+boolean button2 = false;
+boolean button3 = false;
+boolean button4 = false;
+boolean button5 = false;
+boolean button6 = false;
 
 double readButtons(){
   while(buttonPressed =  0){
