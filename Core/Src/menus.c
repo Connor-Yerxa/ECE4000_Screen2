@@ -10,6 +10,7 @@ int screen = 0; // sets where the screen starts
 char text[6][20]; //textbox filler (6 buttons, 20char max)
 char display[1][50]; //Screen display
 int button = 0;
+int number = 0;
 
 //Expected inputs: Buttons 1-6
 //Outputs: Display
@@ -28,20 +29,20 @@ int button = 0;
         display = {"Select testing limit(s)"}
         both = 0
         text = {"Time","Temperature","Both","Default","",""} //'Both' will do 110 and 111 in order, default will reset.
-        int button = readButtons();
+        button = readButtons();
         
         
         if (screen = 110){ //Time select
          display = "Select time limit (max) 10 minutes"
-         //READBUTTONFUNCTION
+         number = numberSelect();
+         
          if (both = 1){  //Active if both was selected
             screen = 111;
          }
         }
-        
         if (screen = 111){ //Temperature Select
          display = "Select temperature delta limit (max 10 degrees)"
-          int button = readButtons();
+         number = numberSelect();
         }          
         if (screen = 120){ // Test running, runs until done or alternative reached
          display = "Test underway"
@@ -54,23 +55,23 @@ int button = 0;
       else if (screen < 300){
         display = {"Run calibration?"}
         text = {"Confirm","Set default","","","","Cancel"}
-        int button = readButtons();
+        button = readButtons();
         
         if (screen = 210){
           display = {"Select calibration material"}
           text = {"Material-A","material-B","","","","Cancel"}
-          int button = readButtons();
+          button = readButtons();
         }
         
         if (screen = 220){
           display = {"Running calibration."}
           text = {"Cancel","","","","",""}
-          int button = readButtons();
+          button = readButtons();
         }
         if (screen = 230){
           display = {"Calibration sucessful"}
           text = {"Return","","","","",""}
-          int button = readButtons();
+          button = readButtons();
         }
       }   
             
@@ -81,15 +82,15 @@ int button = 0;
         
         if (screen = 310){//Brightness
           display = "Brighness 1-10"
-          int button = readButtons();
+          number = numberSelect();
         }
                 if (screen = 310){//Sample Temp
           display = "Temperature change"
-          int button = readButtons();
+          number = numberSelect();
         }
                 if (screen = 310){//Sample Duration
           display = "Sample Duration"
-          int button = readButtons();
+          number = numberSelect();
         }
       }
         
