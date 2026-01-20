@@ -8,16 +8,15 @@
 /*
 // Screen variable
 int screen = 0;
-char text[10][20]; //textbox filler
+char text[6][20]; //textbox filler (6 buttons, 20char max)
 char display[1][50]; //Screen display
-//text = {"","","","","","","","","",""}
 
 // constant loop
   while(1) {
       //Main menu 0-99
       if (screen < 100){
           display = {"Menu"}
-          text = {"New Test", "Calibration", "Settings", "Data", "", "", "", "", "", ""}
+          text = {"New Test", "Calibration", "Settings", "Data", "", ""}
       }
       //Testing
       else if (screen < 200){
@@ -26,7 +25,6 @@ char display[1][50]; //Screen display
         //'Both' will do 110 and 111
         if (screen = 110){ //Time select
          display = "Select time limit (max) 10 minutes"
-         text = {"1","2","3","4","5","6","7","8","9","0"}
         }
         if (screen = 111){ //Temperature Select
          display = "Select temperature delta limit (max 10 degrees)"
@@ -72,12 +70,15 @@ char display[1][50]; //Screen display
           printf("Error: outside of range")
       }
 
+
+      //PUSH TO MAIN SCREEN
 }
 
 
 
 
 */
+
 
 
 
