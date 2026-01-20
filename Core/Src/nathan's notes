@@ -9,8 +9,15 @@ This allows for the functions in .c to be called by another .c with #include NAM
 Buttons need to be set-up to be readable, this will read the pins on the STM(?) and give true/false for every value.
 Should act in a loop until buttons are pressed.
 
-***
+files are readButtons.c/.h
 
+***
+TODO
+Link buttons-pins-variables (PCB)
+
+***
+DONE
+Setup basic readbuttons function
 
 
 /*
