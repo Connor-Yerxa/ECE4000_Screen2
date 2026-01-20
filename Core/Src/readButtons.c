@@ -1,13 +1,13 @@
 /* Reads the button stats, returns 0-6 depending on which are pressed */
 //Ignores multiple buttons, just returns the first
 
-buttonPressed = 0
-button1 = false
-button2 = false
-button3 = false
-button4 = false
-button5 = false
-button6 = false
+buttonPressed = 0;
+button1 = false;
+button2 = false;
+button3 = false;
+button4 = false;
+button5 = false;
+button6 = false;
 
 double readButtons(){
   while(buttonPressed =  0){
@@ -34,7 +34,5 @@ double readButtons(){
       buttonPressed = 6;
     }
   }
-  return buttonsPressed
+  return buttonPressed
 }
-
-//Setup after buttons are added! - PCB needed
