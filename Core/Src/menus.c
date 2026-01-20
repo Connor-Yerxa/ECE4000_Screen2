@@ -1,7 +1,7 @@
 /* menus for the display interface */
 /* Start on main interface, have text boxes appear, with text added separately, potentially as variables */
 
-#include readButtons.h
+#include readButtons.h //Allows the reading of buttons
 
 /*
 // Screen variable
