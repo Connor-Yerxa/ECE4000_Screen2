@@ -2,6 +2,7 @@
 /* Start on main interface, have text boxes appear, with text added separately, potentially as variables */
 
 #include readButtons.h //Allows the reading of buttons
+#include selectNumber.h //Allows for the selection of a number 0-9 (upto 3 times)
 
 /*
 // Screen variable
