@@ -1,1 +1,16 @@
+/*
 
+*** .c/.h
+function is in .c
+  stucture of that function should be in same-name .h
+This allows for the functions in .c to be called by another .c with #include NAME.h
+
+*** buttons
+Buttons need to be set-up to be readable, this will read the pins on the STM(?) and give true/false for every value.
+Should act in a loop until buttons are pressed.
+
+***
+
+
+
+/*
