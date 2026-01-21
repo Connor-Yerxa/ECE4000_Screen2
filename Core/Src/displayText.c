@@ -6,7 +6,7 @@ double displayText(double ID, double extra){
   //extra is to read in other values to show
 
   
-  if (ID = 0){//main menu
+  if (ID = 99){//main menu
     display = {"Menu"}
   }
   if (ID = 100){
