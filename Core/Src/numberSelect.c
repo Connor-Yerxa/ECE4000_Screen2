@@ -8,7 +8,7 @@ int number = 0;
 int extra = 0;
 int multiplier = 0;
 
-double numberSelect(double selectionID, int length){
+double numberSelect(char selectionID, int length){
   while (length > 0){
     button = readButtons();
     if (button = 4){ //increase the number
