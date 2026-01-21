@@ -3,6 +3,8 @@
 #include displayText.h
 #include math.h
 
+//REDO THIS BECAUSE OF BUTTON CHANGE
+
 int button = 0;
 int number = 0;
 int extra = 0;
