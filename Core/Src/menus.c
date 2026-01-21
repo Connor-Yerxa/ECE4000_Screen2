@@ -87,7 +87,20 @@ double menus(){
       if (screen = 120){ // Test running, runs until done or alternative reached
         displayText(screen, 0);
         //RUN TEST OUTPUT or wait for input*** custome function needed
+        screen = 130;
       }
+      if (screen = 130){ // Test finished, save?
+        displayText(screen, 0);
+        screen = 130;
+         if (button = 1){
+          saveTest();
+        }
+        else if (button = 2){
+          deleteTest();
+        }
+      }
+      
+    }
       
       //Calibration
       else if (screen = 200){
