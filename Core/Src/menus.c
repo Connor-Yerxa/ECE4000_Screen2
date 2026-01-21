@@ -57,7 +57,8 @@ double deltaTime = 0;
               both = 1;
           }
           else if (button = 4){
-              deltaTemp = 10;
+              deltaTemp = 100; //10 degrees
+              deltaTime = 600; //10 minutes
               screen = 120; //Run test
           }
           else if (button = 6){
@@ -75,17 +76,17 @@ double deltaTime = 0;
             screen = 111;
          }
           else{
-            screen = 100;
+            screen = 120;
           }
         }
         if (screen = 111){ //Temperature Select
-         displayText(screen, 0);
-         number = numberSelect(E,3);
-          screen = 100;
+           displayText(screen, 0);
+           number = numberSelect(E,3);
+          screen = 120;
         }          
         if (screen = 120){ // Test running, runs until done or alternative reached
          text = {"Cancel","","","","",""}
-         displayText(screen, 0);
+          displayText(screen, 0);
         //READBUTTONFUNCTION??? OR JUST WAIT
         }
       }
