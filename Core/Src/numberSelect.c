@@ -31,13 +31,13 @@ double numberSelect(char selectionID, int length){
   if (selectionID = E){ //tEmperature
       if (number > 100){
           number = 100;
-          displayText(number, 0); //Show alert
+          displayText(999, 0); //Show alert
       }
   }
   if (selectionID = I){ //tIme
       if (number > 180){
           number = 180;
-          displayText(number, 0); //Show alert
+          displayText(999, 0); //Show alert
       }
   }
     
