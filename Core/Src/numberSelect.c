@@ -28,24 +28,25 @@ double numberSelect(char selectionID, int length){
     displayText(); //Display the numbers and buttons
   }
 
+
+  //LIMIT BASED ON TYPE E/A/B
   if (selectionID = E){ //tEmperature
       if (number > 100){
           number = 100;
-          displayText(999, 0); //Show alert
+          displayText(999, 0); //Show alert/error
       }
   }
   if (selectionID = I){ //tIme
       if (number > 180){
           number = 180;
-          displayText(999, 0); //Show alert
+          displayText(999, 0); //Show alert/error
+      }
+  }
+  if (selectionID = B){ //Brightness
+      if (number > 10){
+          number = 10;
       }
   }
     
-    //LIMITS & Checks based on ID (Add more to this!)
-  if (extra > 1000){
-    extra = 1000;
-  }
-
-  
-  return extra
+  return extra //final value return
 }
