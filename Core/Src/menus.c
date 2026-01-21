@@ -6,7 +6,7 @@
 #include displayText.h //Lets the screen display the right text
   
 /*
-// Screen variable
+// variable setup
 int screen = 0; // sets where the screen starts
 char text[6][20]; //textbox filler (6 buttons, 20char max)
 char display[1][50]; //Screen display
@@ -23,18 +23,21 @@ int number = 0;
       if (screen < 100){
           display = {"Menu"}
           text = {"New Test", "Calibration", "Settings", "Data", "", ""}
-          int button = readButtons();
+          displayText(display, screen);
+          button = readButtons();
       }
       //Testing
       else if (screen < 200){
         display = {"Select testing limit(s)"}
         both = 0
         text = {"Time","Temperature","Both","Default","",""} //'Both' will do 110 and 111 in order, default will reset.
+        displayText(display, screen);
         button = readButtons();
         
         
         if (screen = 110){ //Time select
          display = "Select time limit (max) 10 minutes"
+         displayText(display, screen);
          number = numberSelect();
          
          if (both = 1){  //Active if both was selected
