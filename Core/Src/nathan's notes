@@ -11,12 +11,6 @@ Should act in a loop until buttons are pressed.
 
 files are readButtons.c/.h
 
-*** readNumbers
-Needs the ability to read in numbers and record them, as well as ensure limits
-
-*** displayText
-Displays proper text/instructions based on screen # or function ID
-
 ***
 TODO
 Link buttons-pins-variables (PCB)
@@ -27,5 +21,11 @@ Make .h's for the functions
 DONE
 Setup basic readbuttons function
 
+
+*** List of functions to work on
+displayText()
+readButtons()
+numberSelect()
+calibration()
 
 /*
