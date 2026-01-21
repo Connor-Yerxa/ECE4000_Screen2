@@ -11,9 +11,9 @@ char text[6][20]; //textbox filler (6 buttons, 20char max)
 int button = 0;
 int number = 0;
 double deltaTemp = 100;
-double deltaTime = 600;
+double deltaTime = 180;
 double deltaTempDefault = 100;
-double deltaTimeDefault = 600;
+double deltaTimeDefault = 180;
 int brightness = 10;
 
 //Expected inputs: Buttons 1-6
