@@ -143,8 +143,25 @@ double menus(){
             
       //Settings
       else if (screen = 300){
-        text = {"Brightness","Default Sample temp cuttoff","Default Sample duration","","","Back"}
+        //text = {"Brightness","Default Sample temp cuttoff","Default Sample duration","","","Back"}
         displayText(screen, 0);
+        button = readButtons();
+          if (button = 1){
+            screen = 310;
+          }
+          else if (button = 2){
+            screen = 320;
+          }
+          else if (button = 3){
+            screen = 330;
+          }            
+          else if (button = 6){
+            screen = 99; //return to main menu
+          }
+          else{
+            screen = 300; //do nothing
+          }
+        
         if (screen = 310){//Brightness
           displayText(screen, 0);
           number = numberSelect(B,1);
