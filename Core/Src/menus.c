@@ -46,7 +46,7 @@ double menus(){
       both = 0;
       displayText(screen, 0);
       button = readButtons();
-      if (button = 1){
+      if (button = 4){ //swapped 1 and 4 so its the same button to start
         screen = 110; //Time select
       }
       else if (button = 2){
@@ -56,7 +56,7 @@ double menus(){
         screen = 110; //Both
         both = 1;
       }
-      else if (button = 4){
+      else if (button = 1){
         deltaTemp = 100; //10 degrees
         deltaTime = 600; //10 minutes
         screen = 120; //Run test
