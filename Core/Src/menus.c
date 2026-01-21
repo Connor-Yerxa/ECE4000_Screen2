@@ -9,7 +9,6 @@
 // variable setup
 double screen = 0; // sets where the screen starts
 char text[6][20]; //textbox filler (6 buttons, 20char max)
-char display[1][50]; //Screen display
 int button = 0;
 int number = 0;
 
