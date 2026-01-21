@@ -38,7 +38,7 @@ int number = 0;
         if (screen = 110){ //Time select
          display = "Select time limit (max) 10 minutes"
          displayText(screen, 0);
-         number = numberSelect();
+         number = numberSelect(I,4);
          
          if (both = 1){  //Active if both was selected
             screen = 111;
@@ -47,7 +47,7 @@ int number = 0;
         if (screen = 111){ //Temperature Select
          display = "Select temperature delta limit (max 10 degrees)"
          displayText(screen, 0);
-         number = numberSelect();
+         number = numberSelect(E,3);
         }          
         if (screen = 120){ // Test running, runs until done or alternative reached
          display = "Test underway"
@@ -94,17 +94,17 @@ int number = 0;
         if (screen = 310){//Brightness
           display = "Brighness 1-10"
           displayText(screen, 0);
-          number = numberSelect();
+          number = numberSelect(B,1);
         }
                 if (screen = 320){//Sample Temp
           display = "Temperature change"
           displayText(screen, 0);
-          number = numberSelect();
+          number = numberSelect(E,3);
         }
                 if (screen = 330){//Sample Duration
           display = "Sample Duration"
           displayText(screen, 0);
-          number = numberSelect();
+          number = numberSelect(I,4);
         }
       }
         
