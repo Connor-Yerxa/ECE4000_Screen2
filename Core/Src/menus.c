@@ -56,9 +56,9 @@ double menus(){
         screen = 110; //Both
         both = 1;
       }
-      else if (button = 1){
-        deltaTemp = 100; //10 degrees
-        deltaTime = 600; //10 minutes
+      else if (button = 1){ //Default
+        deltaTemp = deltaTempDefault; //10 degrees
+        deltaTime = deltaTimeDefault; //3 minutes
         screen = 120; //Run test
       }
       else if (button = 6){
