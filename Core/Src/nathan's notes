@@ -23,12 +23,12 @@ Setup basic readbuttons function
 
 
 *** List of functions to work on
-displayText() Incomplete
-readButtons() Needs input
-numberSelect() Redo for 6 buttons, add safety
-calibration() Incomplete
-saveTest() Incomplete
-deleteTest() Incomplete
+displayText() High priority - WIP
+readButtons() Needs input - Waiting for Faaiz
+numberSelect() Redo for 6 buttons, add safety - WIP
+calibration() Incomplete - Medium priority
+saveTest() Incomplete - End priority
+deleteTest() Incomplete - End priority
 runTest() High Priority
 
 ***redo for 6 buttons
