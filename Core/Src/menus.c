@@ -11,8 +11,8 @@ double screen = 0; // sets where the screen starts
 char text[6][20]; //textbox filler (6 buttons, 20char max)
 int button = 0;
 int number = 0;
-double deltaTemp = 0;
-double deltaTime = 0;
+double deltaTemp = 100;
+double deltaTime = 600;
 
 //Expected inputs: Buttons 1-6
 //Outputs: Display
@@ -87,26 +87,53 @@ double deltaTime = 0;
         if (screen = 120){ // Test running, runs until done or alternative reached
          text = {"Cancel","","","","",""}
           displayText(screen, 0);
+          //RUN TEST OUTPUT
         //READBUTTONFUNCTION??? OR JUST WAIT
         }
       }
       
       //Calibration
       else if (screen = 200){
-        text = {"Confirm","Set default","","","","Cancel"}
+        text = {"Physical Calibration","Set default","","","","Menu"}
         displayText(screen, 0);
         button = readButtons();
-        
+          if (button = 1){
+              screen = 210;
+          }
+          else if (button = 2){
+              //SET CALIBRATION TO DEFAULT SETTINGS
+          }
+          else if (button = 6){
+              screen = 99; //return to main menu
+          }
+          else{
+             screen = 200; //do nothing
+          }
+
+
         if (screen = 210){
-          text = {"Material-A","material-B","","","","Cancel"}
+          text = {"Material-A","Material-B","","","","Back"}
           displayText(screen, 0);
           button = readButtons();
+          if (button = 1){
+              //MATERIAL A CALIBRATION
+          }
+          else if (button = 2){
+              //MATERIAL B CALIBRATION
+          }
+          else if (button = 6){
+              screen = 200; //return to main menu
+          }
+          else{
+             screen = 210; //do nothing
+          }
         }
         
         if (screen = 220){
           text = {"Cancel","","","","",""}
           displayText(screen, 0);
           button = readButtons();
+          
         }
         if (screen = 230){
           text = {"Return","","","","",""}
