@@ -29,6 +29,7 @@ numberSelect() Redo for 6 buttons, add safety
 calibration() Incomplete
 saveTest() Incomplete
 deleteTest() Incomplete
+runTest() High Priority
 
 ***redo for 6 buttons
 
