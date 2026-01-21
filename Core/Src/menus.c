@@ -153,7 +153,8 @@ int brightness = 10;
         if (screen = 310){//Brightness
           displayText(screen, 0);
           number = numberSelect(B,1);
-          brightness = number;
+          brightness = number; 
+          //OUTPUT UPDATE BRIGHTNESS
         }
                 if (screen = 320){//Sample Temp
           displayText(screen, 0);
@@ -163,8 +164,7 @@ int brightness = 10;
                 if (screen = 330){//Sample Duration
           displayText(screen, 0);
           number = numberSelect(I,4);
-          deltaTimeDefault = number;       
-                  
+          deltaTimeDefault = number;                
         }
       }
         
@@ -179,6 +179,10 @@ int brightness = 10;
 
 
       //PUSH TO MAIN SCREEN
+      /*
+            return deltaTime, deltaTemp
+
+            */
 }
 
 
