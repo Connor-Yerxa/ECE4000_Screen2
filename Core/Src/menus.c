@@ -201,6 +201,7 @@ double menus(){
       //Out of range
       else{
           printf("Error: outside of range")
+            displayText(999,0)
       }
 
 
