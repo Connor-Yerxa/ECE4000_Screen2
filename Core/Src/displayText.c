@@ -3,8 +3,13 @@ double displayText(double ID, double extra){
   //extra is to read in other values to show
 
   
-  if (ID = 1){//read numbers 
+  if (ID = 0){//main menu
+    
   }
+
+
+
+  //OUTPUT TO BOARD
 
   return
 }
