@@ -51,6 +51,9 @@ double displayText(double ID, double extra){
   if (ID = 400){
       display = {"Data"}
   }
+  if (ID = 999){
+      display = {"Error, value out of bounds (Dangerous conditions)"}
+  }
               
               
 
