@@ -13,6 +13,9 @@ int button = 0;
 int number = 0;
 double deltaTemp = 100;
 double deltaTime = 600;
+double deltaTempDefault = 100;
+double deltaTimeDefault = 600;
+int brightness = 10;
 
 //Expected inputs: Buttons 1-6
 //Outputs: Display
@@ -150,14 +153,18 @@ double deltaTime = 600;
         if (screen = 310){//Brightness
           displayText(screen, 0);
           number = numberSelect(B,1);
+          brightness = number;
         }
                 if (screen = 320){//Sample Temp
           displayText(screen, 0);
           number = numberSelect(E,3);
+          deltaTempDefault = number;        
         }
                 if (screen = 330){//Sample Duration
           displayText(screen, 0);
           number = numberSelect(I,4);
+          deltaTimeDefault = number;       
+                  
         }
       }
         
