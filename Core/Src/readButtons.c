@@ -12,8 +12,9 @@ boolean button6 = false;
 double readButtons(){
   while(buttonPressed =  0){
   //Read in buttons from pin activity as booleans, if any are pressed change buttonX. Needs actual pin assignments that will be used.
-
-
+  
+// NEW I/O SINCE BUTTONS HAVE CHANGED - SPEAK TO CONNOR ABOUT NEW PINS
+    
   //Write buttonPressed  
     if (button1 = true){
       buttonPressed = 1;
