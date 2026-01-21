@@ -23,10 +23,12 @@ Setup basic readbuttons function
 
 
 *** List of functions to work on
-displayText()
-readButtons()
-numberSelect()
-calibration()
+displayText() Incomplete
+readButtons() Needs input
+numberSelect() Redo for 6 buttons, add safety
+calibration() Incomplete
+saveTest() Incomplete
+deleteTest() Incomplete
 
 ***redo for 6 buttons
 
