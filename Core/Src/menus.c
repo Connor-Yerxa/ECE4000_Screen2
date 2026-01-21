@@ -19,8 +19,8 @@ int number = 0;
 
 
   while(1) {
-      //Main menu 0-99
-      if (screen < 100){
+      //Main menu 99
+      if (screen = 99){
           text = {"New Test", "Calibration", "Settings", "Data", "", ""}
           displayText(screen, 0);
           button = readButtons();
