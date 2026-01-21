@@ -27,10 +27,25 @@ double numberSelect(char selectionID, int length){
     }
     displayText(); //Display the numbers and buttons
   }
-  
+
+  if (selectionID = E){ //tEmperature
+      if (number > 100){
+          number = 100;
+          displayText(number, 0); //Show alert
+      }
+  }
+  if (selectionID = I){ //tIme
+      if (number > 180){
+          number = 180;
+          displayText(number, 0); //Show alert
+      }
+  }
+    
     //LIMITS & Checks based on ID (Add more to this!)
   if (extra > 1000){
     extra = 1000;
   }
+
+  
   return extra
 }
