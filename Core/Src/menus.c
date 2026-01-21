@@ -86,7 +86,7 @@ double menus(){
       }          
       if (screen = 120){ // Test running, runs until done or alternative reached
         displayText(screen, 0);
-        //RUN TEST OUTPUT or wait for input*** custome function needed
+        runTest();
         screen = 130;
       }
       if (screen = 130){ // Test finished, save?
