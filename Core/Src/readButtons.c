@@ -14,6 +14,10 @@ double readButtons(){
   //Read in buttons from pin activity as booleans, if any are pressed change buttonX. Needs actual pin assignments that will be used.
   
 // NEW I/O SINCE BUTTONS HAVE CHANGED - SPEAK TO CONNOR ABOUT NEW PINS
+
+    /*
+  assign pins to variables with read functionality
+      */
     
   //Write buttonPressed  
     if (button1 = true){
