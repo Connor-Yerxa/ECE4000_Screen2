@@ -11,6 +11,8 @@ double screen = 0; // sets where the screen starts
 char text[6][20]; //textbox filler (6 buttons, 20char max)
 int button = 0;
 int number = 0;
+double deltaTemp = 0;
+double deltaTime = 0;
 
 //Expected inputs: Buttons 1-6
 //Outputs: Display
@@ -23,13 +25,47 @@ int number = 0;
           text = {"New Test", "Calibration", "Settings", "Data", "", ""}
           displayText(screen, 0);
           button = readButtons();
+          if (button = 1){
+              screen = 100; //testing
+          }
+          else if (button = 2){
+              screen = 200; //calibration
+          }
+          else if (button = 3){
+              screen = 300; //settings
+          }
+          else if (button = 4){
+              screen = 400; //Data
+          }
+          else{
+             screen = 99; //do nothing
+          }
       }
-      else if (screen < 200){ // Testing
-        both = 0
-        text = {"Time","Temperature","Both","Default","",""} //'Both' will do 110 and 111 in order, default will reset.
-        displayText(screen, 0);
-        button = readButtons();
-        
+      else if (screen = 100){ // Testing
+          both = 0;
+          text = {"Time","Temperature","Both","Default","","Menu"} //'Both' will do 110 and 111 in order, default will reset.
+          displayText(screen, 0);
+          button = readButtons();
+          if (button = 1){
+              screen = 110; //Time select
+          }
+          else if (button = 2){
+              screen = 110; //Temperature select
+          }
+          else if (button = 3){
+              screen = 110; //Both
+              both = 1;
+          }
+          else if (button = 4){
+              deltaTemp = 10;
+              screen = 120; //Run test
+          }
+          else if (button = 6){
+              screen = 99; //return to main menu
+          }
+          else{
+             screen = 100; //do nothing
+          }
         
         if (screen = 110){ //Time select
          displayText(screen, 0);
@@ -38,10 +74,14 @@ int number = 0;
          if (both = 1){  //Active if both was selected
             screen = 111;
          }
+          else{
+            screen = 100;
+          }
         }
         if (screen = 111){ //Temperature Select
          displayText(screen, 0);
          number = numberSelect(E,3);
+          screen = 100;
         }          
         if (screen = 120){ // Test running, runs until done or alternative reached
          text = {"Cancel","","","","",""}
@@ -51,7 +91,7 @@ int number = 0;
       }
       
       //Calibration
-      else if (screen < 300){
+      else if (screen = 200){
         text = {"Confirm","Set default","","","","Cancel"}
         displayText(screen, 0);
         button = readButtons();
@@ -75,7 +115,7 @@ int number = 0;
       }   
             
       //Settings
-      else if (screen < 400){
+      else if (screen = 300){
         text = {"Brightness","Default Sample temp cuttoff","Default Sample duration","","","Back"}
         displayText(screen, 0);
         
@@ -94,7 +134,7 @@ int number = 0;
       }
         
       //Data
-      else if (screen < 500){
+      else if (screen = 400){
         //To be developed potentially later.
       }
       //Out of range
