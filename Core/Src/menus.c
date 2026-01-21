@@ -21,14 +21,11 @@ int number = 0;
   while(1) {
       //Main menu 0-99
       if (screen < 100){
-          display = {"Menu"}
           text = {"New Test", "Calibration", "Settings", "Data", "", ""}
           displayText(screen, 0);
           button = readButtons();
       }
-      //Testing
-      else if (screen < 200){
-        display = {"Select testing limit(s)"}
+      else if (screen < 200){ // Testing
         both = 0
         text = {"Time","Temperature","Both","Default","",""} //'Both' will do 110 and 111 in order, default will reset.
         displayText(screen, 0);
@@ -36,7 +33,6 @@ int number = 0;
         
         
         if (screen = 110){ //Time select
-         display = "Select time limit (max) 10 minutes"
          displayText(screen, 0);
          number = numberSelect(I,4);
          
@@ -45,12 +41,10 @@ int number = 0;
          }
         }
         if (screen = 111){ //Temperature Select
-         display = "Select temperature delta limit (max 10 degrees)"
          displayText(screen, 0);
          number = numberSelect(E,3);
         }          
         if (screen = 120){ // Test running, runs until done or alternative reached
-         display = "Test underway"
          text = {"Cancel","","","","",""}
          displayText(screen, 0);
         //READBUTTONFUNCTION??? OR JUST WAIT
@@ -59,26 +53,22 @@ int number = 0;
       
       //Calibration
       else if (screen < 300){
-        display = {"Run calibration?"}
         text = {"Confirm","Set default","","","","Cancel"}
         displayText(screen, 0);
         button = readButtons();
         
         if (screen = 210){
-          display = {"Select calibration material"}
           text = {"Material-A","material-B","","","","Cancel"}
           displayText(screen, 0);
           button = readButtons();
         }
         
         if (screen = 220){
-          display = {"Running calibration."}
           text = {"Cancel","","","","",""}
           displayText(screen, 0);
           button = readButtons();
         }
         if (screen = 230){
-          display = {"Calibration sucessful"}
           text = {"Return","","","","",""}
           displayText(screen, 0);
           button = readButtons();
@@ -87,22 +77,18 @@ int number = 0;
             
       //Settings
       else if (screen < 400){
-        display = {"Settings"}
         text = {"Brightness","Default Sample temp cuttoff","Default Sample duration","","","Back"}
         displayText(screen, 0);
         
         if (screen = 310){//Brightness
-          display = "Brighness 1-10"
           displayText(screen, 0);
           number = numberSelect(B,1);
         }
                 if (screen = 320){//Sample Temp
-          display = "Temperature change"
           displayText(screen, 0);
           number = numberSelect(E,3);
         }
                 if (screen = 330){//Sample Duration
-          display = "Sample Duration"
           displayText(screen, 0);
           number = numberSelect(I,4);
         }
