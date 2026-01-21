@@ -5,7 +5,7 @@
 #include selectNumber.h //Allows for the selection of a number 0-9
 #include displayText.h //Lets the screen display the right text
   
-/*
+
 // variable setup
 double screen = 0; // sets where the screen starts
 char text[6][20]; //textbox filler (6 buttons, 20char max)
@@ -110,7 +110,6 @@ int number = 0;
 
 
 
-*/
 
 
 
