@@ -72,6 +72,7 @@ double menus(){
       if (screen = 110){ //Time select
         displayText(screen, 0);
         number = numberSelect(I,4);
+        deltaTime = number;
         if (both = 1){  //Active if both was selected
           screen = 111;
         }
@@ -82,11 +83,12 @@ double menus(){
       if (screen = 111){ //Temperature Select
         displayText(screen, 0);
         number = numberSelect(E,3);
+        deltaTemp = number;
         screen = 120;
       }          
       if (screen = 120){ // Test running, runs until done or alternative reached
         displayText(screen, 0);
-        runTest();
+        runTest(deltaTemp, deltaTime);
         screen = 130;
       }
       if (screen = 130){ // Test finished, save?
