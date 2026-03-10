@@ -1,6 +1,7 @@
 /* menus for the display interface */
 /* Start on main interface, have text boxes appear, with text added separately, potentially as variables */
 
+#include <stdio.h>
 #include "menus.h" //links to .h
 #include "read_Buttons.h" //Allows the reading of buttons
 #include "selectNumber.h" //Allows for the selection of a number 0-9
@@ -20,7 +21,7 @@ int both = 0;
 //Expected inputs: Buttons 1-6
 //Outputs: Display
 //Screen starts at "stage" 0, and alters in an else-if statement until it reaches the section that needs to update.
-double menus(){
+void menus(){
   while(1) {
     //Main menu 99
     if (screen == 99){
@@ -68,6 +69,7 @@ double menus(){
       else{
         screen = 100; //do nothing
       }
+    }
 
       if (screen == 110){ //Time select
         displayText(screen, 0);
@@ -202,10 +204,9 @@ double menus(){
       }
       //Out of range
       else{
-          printf("Error: outside of range")
-            displayText(999,0)
+          printf("Error: outside of range");
+            displayText(999,0);
       }
-
 
       //PUSH TO MAIN SCREEN
       /*
