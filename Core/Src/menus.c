@@ -23,53 +23,53 @@ boolean both = 0;
 double menus(){
   while(1) {
     //Main menu 99
-    if (screen = 99){
+    if (screen == 99){
       //text = {"New Test", "Calibration", "Settings", "Data", "", ""}
       displayText(screen, 0);
       button = read_buttons();
-      if (button = 1){
+      if (button == 1){
         screen = 100; //testing
       }
-      else if (button = 2){
+      else if (button == 2){
         screen = 200; //calibration
       }
-      else if (button = 3){
+      else if (button == 3){
         screen = 300; //settings
       }
-      else if (button = 4){
+      else if (button == 4){
         screen = 400; //Data
       }
       else{
         screen = 99; //do nothing
       }
     }
-    else if (screen = 100){ // Testing
+    else if (screen == 100){ // Testing
       both = 0;
       displayText(screen, 0);
       button = read_buttons();
       if (button = 4){ //swapped 1 and 4 so its the same button to start
         screen = 110; //Time select
       }
-      else if (button = 2){
+      else if (button == 2){
         screen = 110; //Temperature select
       }
-      else if (button = 3){
+      else if (button == 3){
         screen = 110; //Both
         both = 1;
       }
-      else if (button = 1){ //Default
+      else if (button == 1){ //Default
         deltaTemp = deltaTempDefault; //10 degrees
         deltaTime = deltaTimeDefault; //3 minutes
         screen = 120; //Run test
       }
-      else if (button = 6){
+      else if (button == 6){
         screen = 99; //return to main menu
       }
       else{
         screen = 100; //do nothing
       }
 
-      if (screen = 110){ //Time select
+      if (screen == 110){ //Time select
         displayText(screen, 0);
         number = numberSelect(I,4);
         deltaTime = number;
@@ -80,24 +80,24 @@ double menus(){
           screen = 120;
         }
       }
-      if (screen = 111){ //Temperature Select
+      if (screen == 111){ //Temperature Select
         displayText(screen, 0);
         number = numberSelect(E,3);
         deltaTemp = number;
         screen = 120;
       }          
-      if (screen = 120){ // Test running, runs until done or alternative reached
+      if (screen == 120){ // Test running, runs until done or alternative reached
         displayText(screen, 0);
         runTest(deltaTemp, deltaTime);
         screen = 130;
       }
-      if (screen = 130){ // Test finished, save?
+      if (screen == 130){ // Test finished, save?
         displayText(screen, 0);
         screen = 130;
-         if (button = 1){
+         if (button == 1){
           saveTest();
         }
-        else if (button = 2){
+        else if (button == 2){
           deleteTest();
         }
       }
@@ -105,33 +105,33 @@ double menus(){
     }
       
       //Calibration
-      else if (screen = 200){
+      else if (screen == 200){
         //text = {"Physical Calibration","Set default","","","","Menu"}
         displayText(screen, 0);
         button = read_buttons();
         if (button = 1){
           screen = 210;
         }
-        else if (button = 2){
+        else if (button == 2){
           //SET CALIBRATION TO DEFAULT SETTINGS
         }
-        else if (button = 6){
+        else if (button == 6){
           screen = 99; //return to main menu
         }
         else{
           screen = 200; //do nothing
         }
-        if (screen = 210){
+        if (screen == 210){
           //text = {"Material-A","Material-B","","","","Back"}
           displayText(screen, 0);
           button = read_buttons();
-          if (button = 1){
+          if (button == 1){
             //MATERIAL A CALIBRATION FUNCTION
           }
-          else if (button = 2){
+          else if (button == 2){
             //MATERIAL B CALIBRATION FUNCTION
           }
-          else if (button = 6){
+          else if (button == 6){
             screen = 200; //return to main menu
           }
           else{
@@ -139,7 +139,7 @@ double menus(){
           }
         }
         
-        if (screen = 220){ //MIGHT NEEDS A SPECIAL FUNCTION IN THE FUTURE
+        if (screen == 220){ //MIGHT NEEDS A SPECIAL FUNCTION IN THE FUTURE
           //text = {"Cancel","","","","",""}
           displayText(screen, 0);
           button = read_buttons();
@@ -149,7 +149,7 @@ double menus(){
           }
         }
           
-        if (screen = 230){
+        if (screen == 230){
           //text = {"Return","","","","",""}
           displayText(screen, 0);
           button = read_buttons();
@@ -158,38 +158,38 @@ double menus(){
       }
             
       //Settings
-      else if (screen = 300){
+      else if (screen == 300){
         //text = {"Brightness","Default Sample temp cuttoff","Default Sample duration","","","Back"}
         displayText(screen, 0);
         button = read_buttons();
-          if (button = 1){
+          if (button == 1){
             screen = 310;
           }
-          else if (button = 2){
+          else if (button == 2){
             screen = 320;
           }
-          else if (button = 3){
+          else if (button == 3){
             screen = 330;
           }            
-          else if (button = 6){
+          else if (button == 6){
             screen = 99; //return to main menu
           }
           else{
             screen = 300; //do nothing
           }
         
-        if (screen = 310){//Brightness
+        if (screen == 310){//Brightness
           displayText(screen, 0);
           number = numberSelect(B,1);
           brightness = number; 
           //OUTPUT UPDATE BRIGHTNESS
         }
-        if (screen = 320){//Sample Temp
+        if (screen == 320){//Sample Temp
           displayText(screen, 0);
           number = numberSelect(E,3);
           deltaTempDefault = number;        //updates default -- maybe add storage function (offline)
         }
-        if (screen = 330){//Sample Duration
+        if (screen == 330){//Sample Duration
           displayText(screen, 0);
           number = numberSelect(I,4);
           deltaTimeDefault = number;        //updates default -- maybe add storage function (offline)        
@@ -197,7 +197,7 @@ double menus(){
       }
         
       //Data
-      else if (screen = 400){
+      else if (screen == 400){
         //To be developed potentially later.
       }
       //Out of range
