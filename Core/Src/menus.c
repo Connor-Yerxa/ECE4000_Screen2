@@ -180,18 +180,18 @@ double menus(){
         
         if (screen == 310){//Brightness
           displayText(screen, 0);
-          number = numberSelect(B,1);
+          number = numberSelect('B',1);
           brightness = number; 
           //OUTPUT UPDATE BRIGHTNESS
         }
         if (screen == 320){//Sample Temp
           displayText(screen, 0);
-          number = numberSelect(E,3);
+          number = numberSelect('E',3);
           deltaTempDefault = number;        //updates default -- maybe add storage function (offline)
         }
         if (screen == 330){//Sample Duration
           displayText(screen, 0);
-          number = numberSelect(I,4);
+          number = numberSelect('I',4);
           deltaTimeDefault = number;        //updates default -- maybe add storage function (offline)        
         }
       }
