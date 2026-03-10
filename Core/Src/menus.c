@@ -47,7 +47,7 @@ double menus(){
       both = 0;
       displayText(screen, 0);
       button = read_buttons();
-      if (button = 4){ //swapped 1 and 4 so its the same button to start
+      if (button == 4){ //swapped 1 and 4 so its the same button to start
         screen = 110; //Time select
       }
       else if (button == 2){
@@ -73,7 +73,7 @@ double menus(){
         displayText(screen, 0);
         number = numberSelect(I,4);
         deltaTime = number;
-        if (both = 1){  //Active if both was selected
+        if (both == 1){  //Active if both was selected
           screen = 111;
         }
         else{
@@ -109,7 +109,7 @@ double menus(){
         //text = {"Physical Calibration","Set default","","","","Menu"}
         displayText(screen, 0);
         button = read_buttons();
-        if (button = 1){
+        if (button == 1){
           screen = 210;
         }
         else if (button == 2){
@@ -143,7 +143,7 @@ double menus(){
           //text = {"Cancel","","","","",""}
           displayText(screen, 0);
           button = read_buttons();
-          if (button = 6){
+          if (button == 6){
             displayText(screen, 0);
             screen = 210
           }
