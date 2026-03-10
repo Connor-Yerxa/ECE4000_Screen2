@@ -16,7 +16,7 @@ double deltaTime = 180;
 double deltaTempDefault = 100;
 double deltaTimeDefault = 180;
 int brightness = 10;
-boolean both = 0;
+int both = 0;
 //Expected inputs: Buttons 1-6
 //Outputs: Display
 //Screen starts at "stage" 0, and alters in an else-if statement until it reaches the section that needs to update.
