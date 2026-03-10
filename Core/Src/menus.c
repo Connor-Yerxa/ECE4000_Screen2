@@ -71,7 +71,7 @@ double menus(){
 
       if (screen == 110){ //Time select
         displayText(screen, 0);
-        number = numberSelect(I,4);
+        number = numberSelect('I',4);
         deltaTime = number;
         if (both == 1){  //Active if both was selected
           screen = 111;
@@ -82,7 +82,7 @@ double menus(){
       }
       if (screen == 111){ //Temperature Select
         displayText(screen, 0);
-        number = numberSelect(E,3);
+        number = numberSelect('E',3);
         deltaTemp = number;
         screen = 120;
       }          
@@ -93,7 +93,7 @@ double menus(){
       }
       if (screen == 130){ // Test finished, save?
         displayText(screen, 0);
-        screen = 130;
+         button = read_buttons();
          if (button == 1){
           saveTest();
         }
@@ -145,7 +145,7 @@ double menus(){
           button = read_buttons();
           if (button == 6){
             displayText(screen, 0);
-            screen = 210
+            screen = 210;
           }
         }
           
