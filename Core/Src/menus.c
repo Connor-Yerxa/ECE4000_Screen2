@@ -2,7 +2,7 @@
 /* Start on main interface, have text boxes appear, with text added separately, potentially as variables */
 
 #include menus.h //links to .h
-#include readButtons.h //Allows the reading of buttons
+#include read_Buttons.h //Allows the reading of buttons
 #include selectNumber.h //Allows for the selection of a number 0-9
 #include displayText.h //Lets the screen display the right text
   
@@ -26,7 +26,7 @@ double menus(){
     if (screen = 99){
       //text = {"New Test", "Calibration", "Settings", "Data", "", ""}
       displayText(screen, 0);
-      button = readButtons();
+      button = read_buttons();
       if (button = 1){
         screen = 100; //testing
       }
@@ -46,7 +46,7 @@ double menus(){
     else if (screen = 100){ // Testing
       both = 0;
       displayText(screen, 0);
-      button = readButtons();
+      button = read_buttons();
       if (button = 4){ //swapped 1 and 4 so its the same button to start
         screen = 110; //Time select
       }
@@ -108,7 +108,7 @@ double menus(){
       else if (screen = 200){
         //text = {"Physical Calibration","Set default","","","","Menu"}
         displayText(screen, 0);
-        button = readButtons();
+        button = read_buttons();
         if (button = 1){
           screen = 210;
         }
@@ -124,7 +124,7 @@ double menus(){
         if (screen = 210){
           //text = {"Material-A","Material-B","","","","Back"}
           displayText(screen, 0);
-          button = readButtons();
+          button = read_buttons();
           if (button = 1){
             //MATERIAL A CALIBRATION FUNCTION
           }
@@ -142,7 +142,7 @@ double menus(){
         if (screen = 220){ //MIGHT NEEDS A SPECIAL FUNCTION IN THE FUTURE
           //text = {"Cancel","","","","",""}
           displayText(screen, 0);
-          button = readButtons();
+          button = read_buttons();
           if (button = 6){
             displayText(screen, 0);
             screen = 210
@@ -152,7 +152,7 @@ double menus(){
         if (screen = 230){
           //text = {"Return","","","","",""}
           displayText(screen, 0);
-          button = readButtons();
+          button = read_buttons();
           screen = 200;
         }
       }
@@ -161,7 +161,7 @@ double menus(){
       else if (screen = 300){
         //text = {"Brightness","Default Sample temp cuttoff","Default Sample duration","","","Back"}
         displayText(screen, 0);
-        button = readButtons();
+        button = read_buttons();
           if (button = 1){
             screen = 310;
           }
